@@ -1,0 +1,439 @@
+{
+  "C:\\Users\\Felipe\\source\\repos\\GitHub-Old-Repos\\GitHub-Old-Repos": {
+    "versionSfCore": null,
+    "versionFramework": "4.4.14",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeResolverProviders": {
+      "default-aws-credential-resolver": "<REDACTED>",
+      "sls": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "github-old-repos",
+            "provider": {
+              "name": "aws",
+              "runtime": "dotnet8",
+              "region": "us-east-1",
+              "stage": "dev",
+              "versionFunctions": true,
+              "compiledCloudFormationTemplate": {
+                "AWSTemplateFormatVersion": "2010-09-09",
+                "Description": "The AWS CloudFormation template for this Serverless application",
+                "Resources": {
+                  "APIGitLogGroup": {
+                    "Type": "AWS::Logs::LogGroup",
+                    "Properties": {
+                      "LogGroupName": "/aws/lambda/github-old-repos-dev-APIGit"
+                    }
+                  },
+                  "IamRoleLambdaExecution": {
+                    "Type": "AWS::IAM::Role",
+                    "Properties": {
+                      "AssumeRolePolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                          {
+                            "Effect": "Allow",
+                            "Principal": {
+                              "Service": [
+                                "lambda.amazonaws.com"
+                              ]
+                            },
+                            "Action": [
+                              "sts:AssumeRole"
+                            ]
+                          }
+                        ]
+                      },
+                      "Policies": [
+                        {
+                          "PolicyName": {
+                            "Fn::Join": [
+                              "-",
+                              [
+                                "github-old-repos",
+                                "dev",
+                                "lambda"
+                              ]
+                            ]
+                          },
+                          "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                              {
+                                "Effect": "Allow",
+                                "Action": [
+                                  "logs:CreateLogStream",
+                                  "logs:CreateLogGroup",
+                                  "logs:TagResource"
+                                ],
+                                "Resource": [
+                                  {
+                                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/github-old-repos-dev*:*"
+                                  }
+                                ]
+                              },
+                              {
+                                "Effect": "Allow",
+                                "Action": [
+                                  "logs:PutLogEvents"
+                                ],
+                                "Resource": [
+                                  {
+                                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/github-old-repos-dev*:*:*"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "Path": "/",
+                      "RoleName": {
+                        "Fn::Join": [
+                          "-",
+                          [
+                            "github-old-repos",
+                            "dev",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            "lambdaRole"
+                          ]
+                        ]
+                      }
+                    }
+                  },
+                  "APIGitLambdaFunction": {
+                    "Type": "AWS::Lambda::Function",
+                    "Properties": {
+                      "Code": {
+                        "S3Bucket": "serverless-framework-deployments-us-east-1-6943ff2b-f9c4",
+                        "S3Key": "serverless/github-old-repos/dev/1733763330254-2024-12-09T16:55:30.254Z/githuboldrepos.zip"
+                      },
+                      "Handler": "AwsDotnetCsharp::GitHub_Old_Repos.GitHubController::GetOldestCSharpRepositories",
+                      "Runtime": "dotnet8",
+                      "FunctionName": "github-old-repos-dev-APIGit",
+                      "MemorySize": 1024,
+                      "Timeout": 6,
+                      "Role": {
+                        "Fn::GetAtt": [
+                          "IamRoleLambdaExecution",
+                          "Arn"
+                        ]
+                      }
+                    },
+                    "DependsOn": [
+                      "APIGitLogGroup"
+                    ]
+                  },
+                  "APIGitLambdaVersion7DIeitOHNP77shE1sY2wUXOktGMmpbFZTJr1q8S3sk": {
+                    "Type": "AWS::Lambda::Version",
+                    "DeletionPolicy": "Retain",
+                    "Properties": {
+                      "FunctionName": {
+                        "Ref": "APIGitLambdaFunction"
+                      },
+                      "CodeSha256": "aLBNZwTb6DAExJKjYtgj76uTxtUnEKIxUUEc2yhlKhQ="
+                    }
+                  }
+                },
+                "Outputs": {
+                  "ServerlessDeploymentBucketName": {
+                    "Value": "serverless-framework-deployments-us-east-1-6943ff2b-f9c4",
+                    "Export": {
+                      "Name": "sls-github-old-repos-dev-ServerlessDeploymentBucketName"
+                    }
+                  },
+                  "APIGitLambdaFunctionQualifiedArn": {
+                    "Description": "Current Lambda function version",
+                    "Value": {
+                      "Ref": "APIGitLambdaVersion7DIeitOHNP77shE1sY2wUXOktGMmpbFZTJr1q8S3sk"
+                    },
+                    "Export": {
+                      "Name": "sls-github-old-repos-dev-APIGitLambdaFunctionQualifiedArn"
+                    }
+                  }
+                }
+              },
+              "vpc": {}
+            },
+            "package": {
+              "individually": true,
+              "artifactsS3KeyDirname": "serverless/github-old-repos/dev/code-artifacts",
+              "deploymentBucket": "serverless-framework-deployments-us-east-1-6943ff2b-f9c4",
+              "artifactDirectoryName": "serverless/github-old-repos/dev/1733763330254-2024-12-09T16:55:30.254Z"
+            },
+            "functions": {
+              "APIGit": {
+                "handler": "AwsDotnetCsharp::GitHub_Old_Repos.GitHubController::GetOldestCSharpRepositories",
+                "package": {
+                  "artifact": "bin/release/net8.0/githuboldrepos.zip"
+                },
+                "events": [],
+                "name": "github-old-repos-dev-APIGit",
+                "memory": 1024,
+                "timeout": 6,
+                "runtime": "dotnet8",
+                "vpc": {},
+                "versionLogicalId": "APIGitLambdaVersion7DIeitOHNP77shE1sY2wUXOktGMmpbFZTJr1q8S3sk"
+              }
+            },
+            "http": {
+              "path": "api",
+              "method": "get"
+            },
+            "events": null
+          },
+          "configFileDirPath": "C:\\Users\\Felipe\\source\\repos\\GitHub-Old-Repos\\GitHub-Old-Repos",
+          "config": {
+            "type": "sls"
+          },
+          "options": {},
+          "stage": "dev",
+          "dashboard": null,
+          "logger": {
+            "namespace": "s:core:resolver:sls",
+            "prefix": null,
+            "prefixColor": null
+          },
+          "_credentialsPromise": "<REDACTED>"
+        },
+        "resolvers": {}
+      }
+    },
+    "composeServiceName": null,
+    "servicePath": "C:\\Users\\Felipe\\source\\repos\\GitHub-Old-Repos\\GitHub-Old-Repos",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "github-old-repos",
+      "provider": {
+        "name": "aws",
+        "runtime": "dotnet8",
+        "region": "us-east-1",
+        "stage": "dev",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "APIGitLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/github-old-repos-dev-APIGit"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "github-old-repos",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/github-old-repos-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/github-old-repos-dev*:*:*"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "github-old-repos",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            },
+            "APIGitLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-6943ff2b-f9c4",
+                  "S3Key": "serverless/github-old-repos/dev/1733763330254-2024-12-09T16:55:30.254Z/githuboldrepos.zip"
+                },
+                "Handler": "AwsDotnetCsharp::GitHub_Old_Repos.GitHubController::GetOldestCSharpRepositories",
+                "Runtime": "dotnet8",
+                "FunctionName": "github-old-repos-dev-APIGit",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "APIGitLogGroup"
+              ]
+            },
+            "APIGitLambdaVersion7DIeitOHNP77shE1sY2wUXOktGMmpbFZTJr1q8S3sk": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "APIGitLambdaFunction"
+                },
+                "CodeSha256": "aLBNZwTb6DAExJKjYtgj76uTxtUnEKIxUUEc2yhlKhQ="
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-us-east-1-6943ff2b-f9c4",
+              "Export": {
+                "Name": "sls-github-old-repos-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "APIGitLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "APIGitLambdaVersion7DIeitOHNP77shE1sY2wUXOktGMmpbFZTJr1q8S3sk"
+              },
+              "Export": {
+                "Name": "sls-github-old-repos-dev-APIGitLambdaFunctionQualifiedArn"
+              }
+            }
+          }
+        },
+        "vpc": {}
+      },
+      "package": {
+        "individually": true,
+        "artifactsS3KeyDirname": "serverless/github-old-repos/dev/code-artifacts",
+        "deploymentBucket": "serverless-framework-deployments-us-east-1-6943ff2b-f9c4",
+        "artifactDirectoryName": "serverless/github-old-repos/dev/1733763330254-2024-12-09T16:55:30.254Z"
+      },
+      "functions": {
+        "APIGit": {
+          "handler": "AwsDotnetCsharp::GitHub_Old_Repos.GitHubController::GetOldestCSharpRepositories",
+          "package": {
+            "artifact": "bin/release/net8.0/githuboldrepos.zip"
+          },
+          "events": [],
+          "name": "github-old-repos-dev-APIGit",
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "dotnet8",
+          "vpc": {},
+          "versionLogicalId": "APIGitLambdaVersion7DIeitOHNP77shE1sY2wUXOktGMmpbFZTJr1q8S3sk"
+        }
+      },
+      "http": {
+        "path": "api",
+        "method": "get"
+      },
+      "events": null
+    },
+    "serviceRawFile": "service: github-old-repos # NOTE: update this with your service name\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: dotnet8\r\n  region: us-east-1\r\n\r\npackage:\r\n  individually: true\r\n\r\nfunctions:\r\n  APIGit:\r\n    handler: AwsDotnetCsharp::GitHub_Old_Repos.GitHubController::GetOldestCSharpRepositories\r\n    package:\r\n      artifact: bin/release/net8.0/githuboldrepos.zip\r\n\r\nevents:\r\n      \r\nhttp:\r\n        path: api\r\n        method: get\r\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "error": null,
+    "params": {},
+    "machineId": "3df9f068e00a3dacdc4dc7b17eff562d",
+    "stage": "dev",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "1844a26f-6e38-416f-8586-230f5da1f307",
+    "orgName": "gitapioldrepos",
+    "userId": "cwDKFppcD6wdqw9vBN",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "gitapioldrepos",
+    "subscription": null,
+    "userEmail": "felipeoliveiralves@gmail.com",
+    "serviceProviderAwsRegion": "us-east-1",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "662090774893",
+    "projectType": "traditional",
+    "versionSf": "4.4.14",
+    "serviceProviderAwsCfStackName": "github-old-repos-dev",
+    "integrations": {},
+    "serviceUniqueId": "arn:aws:cloudformation:us-east-1:662090774893:stack/github-old-repos-dev/6b1dbcb0-b64e-11ef-a984-0e07dea7e4d3",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:662090774893:stack/github-old-repos-dev/6b1dbcb0-b64e-11ef-a984-0e07dea7e4d3",
+    "serviceProviderAwsCfStackCreated": "2024-12-09T16:55:39.383Z",
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "APIGitLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:662090774893:function:github-old-repos-dev-APIGit:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-github-old-repos-dev-APIGitLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-6943ff2b-f9c4",
+        "ExportName": "sls-github-old-repos-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}

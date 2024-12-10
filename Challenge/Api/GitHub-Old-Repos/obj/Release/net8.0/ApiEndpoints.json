@@ -1,0 +1,23 @@
+[
+  {
+    "ContainingType": "GitHubController",
+    "Method": "GetOldestCSharpRepositories",
+    "RelativePath": "api/GitHub/oldest-repos/{username}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "username",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "count",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\GitHub-Old-Repos.props" />
+</Project>

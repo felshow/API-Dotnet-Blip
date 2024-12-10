@@ -1,0 +1,21 @@
+service: github-old-repos # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: dotnet8
+  region: us-east-1
+
+package:
+  individually: true
+
+functions:
+  APIGit:
+    handler: AwsDotnetCsharp::GitHub_Old_Repos.GitHubController::GetOldestCSharpRepositories
+    package:
+      artifact: bin/release/net8.0/githuboldrepos.zip
+
+events:
+      
+http:
+        path: api
+        method: get
